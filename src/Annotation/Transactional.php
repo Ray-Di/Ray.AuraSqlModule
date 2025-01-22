@@ -10,9 +10,10 @@ use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 /**
  * @Annotation
  * @Target("METHOD")
+ * @NamedArgumentConstructor
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final class Transactional implements NamedArgumentConstructorAnnotation
+final class Transactional
 {
     /**
      * @var ?array<string>
