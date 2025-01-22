@@ -6,7 +6,6 @@ namespace Ray\AuraSqlModule\Annotation;
 
 use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 use Ray\Di\Di\Qualifier;
 
 /**

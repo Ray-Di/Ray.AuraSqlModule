@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Ray\AuraSqlModule\Annotation;
 
 use Attribute;
-use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
 /**
  * @Annotation
  * @Target("METHOD")
- * @NamedArgumentConstructor
+ * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final class Transactional
