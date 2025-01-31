@@ -69,7 +69,7 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
             throw new NotInitialized();
         }
 
-        $countQueryBuilderModifier = static function (Select $select) {
+        $countQueryBuilderModifier = static function (Select $select): Select {
             foreach (array_keys($select->getCols()) as $key) {
                 $select->removeCol($key);
             }

@@ -48,6 +48,7 @@ class AuraSqlConnectionInterceptor implements MethodInterceptor
         return $invocation->proceed();
     }
 
+    /** @param MethodInvocation<object> $invocation */
     private function getConnection(MethodInvocation $invocation): ExtendedPdoInterface
     {
         $methodName = $invocation->getMethod()->name;
