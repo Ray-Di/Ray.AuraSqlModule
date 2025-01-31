@@ -12,9 +12,10 @@ use Ray\Di\Di\Qualifier;
  * @Annotation
  * @Target("METHOD")
  * @Qualifier
+ * @NamedArgumentConstructor
  */
 #[Attribute(Attribute::TARGET_METHOD), Qualifier]
-final class PagerViewOption implements NamedArgumentConstructorAnnotation
+final class PagerViewOption
 {
     /** @var string */
     public $value;
