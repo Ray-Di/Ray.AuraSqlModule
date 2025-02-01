@@ -39,6 +39,9 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
 
     /**
      * @phpstan-param positive-int $paging
+     *
+     * @return AuraSqlQueryPagerInterface
+     *
      * {@inheritDoc}
      */
     public function init(ExtendedPdoInterface $pdo, SelectInterface $select, int $paging, RouteGeneratorInterface $routeGenerator)
