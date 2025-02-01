@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ray\AuraSqlModule\Pagerfanta;
 
+use Override;
+
 use const PHP_EOL;
 
 class ExtendedPdoAdapterTest extends AbstractPdoTestCase
@@ -11,9 +13,11 @@ class ExtendedPdoAdapterTest extends AbstractPdoTestCase
     /** @var ExtendedPdoAdapter */
     protected $pdoAdapter;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->pdoAdapter = new ExtendedPdoAdapter($this->pdo, 'SELECT * FROM posts', []);
     }
 
@@ -60,10 +64,8 @@ class ExtendedPdoAdapterTest extends AbstractPdoTestCase
         $this->assertSame($expected, $slice);
     }
 
-    /**
-     * @return array<array<string>>
-     */
-    public function splProvider(): array
+    /** @return array<array<string>> */
+    public static function splProvider(): array
     {
         return [
             ['SELECT * FROM posts', [], 'SELECT COUNT(*) FROM posts', 50],

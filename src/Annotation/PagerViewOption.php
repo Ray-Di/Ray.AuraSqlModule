@@ -17,11 +17,7 @@ use Ray\Di\Di\Qualifier;
 #[Attribute(Attribute::TARGET_METHOD), Qualifier]
 final class PagerViewOption
 {
-    /** @var string */
-    public $value;
-
-    public function __construct(string $value)
+    public function __construct(public string $value)
     {
-        $this->value = $value;
     }
 }

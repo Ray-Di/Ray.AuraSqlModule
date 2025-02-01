@@ -15,7 +15,6 @@ use Ray\Di\Instance;
 use ReflectionProperty;
 
 use function assert;
-use function get_class;
 
 class AuraSqlModuleTest extends TestCase
 {
@@ -74,7 +73,7 @@ class AuraSqlModuleTest extends TestCase
 
     private function getDsn(ExtendedPdo $pdo): string
     {
-        $prop = new ReflectionProperty(get_class($pdo), 'args');
+        $prop = new ReflectionProperty($pdo::class, 'args');
         $prop->setAccessible(true);
         $args = $prop->getValue($pdo);
 

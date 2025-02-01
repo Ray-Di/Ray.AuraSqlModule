@@ -17,16 +17,10 @@ use ReturnTypeWillChange;
 use function assert;
 use function class_exists;
 
-/**
- * @template T
- */
+/** @template T */
 class AuraSqlPager implements AuraSqlPagerInterface
 {
-    private ViewInterface $view;
     private ?RouteGeneratorInterface $routeGenerator = null;
-
-    /** @var array<array<string>> */
-    private array $viewOptions;
     private ExtendedPdoInterface $pdo;
     private string $sql;
     private ?string $entity = null;
@@ -43,14 +37,12 @@ class AuraSqlPager implements AuraSqlPagerInterface
      * @PagerViewOption("viewOptions")
      */
     #[PagerViewOption('viewOptions')]
-    public function __construct(ViewInterface $view, array $viewOptions)
+    public function __construct(private readonly ViewInterface $view, private readonly array $viewOptions)
     {
-        $this->view = $view;
-        $this->viewOptions = $viewOptions;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @phpstan-param positive-int $paging
      */
@@ -65,7 +57,7 @@ class AuraSqlPager implements AuraSqlPagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
@@ -74,7 +66,7 @@ class AuraSqlPager implements AuraSqlPagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @phpstan-param positive-int $currentPage
      */
@@ -101,7 +93,7 @@ class AuraSqlPager implements AuraSqlPagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetSet($offset, $value): void
     {
@@ -109,16 +101,14 @@ class AuraSqlPager implements AuraSqlPagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetUnset($offset): void
     {
         throw new LogicException('read only');
     }
 
-    /**
-     * @return AdapterInterface<T>
-     */
+    /** @return AdapterInterface<T> */
     private function getPdoAdapter(): AdapterInterface
     {
         assert($this->entity === null || class_exists($this->entity));

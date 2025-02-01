@@ -16,15 +16,12 @@ class AuraSqlSlaveDbInterceptor implements MethodInterceptor
      */
     public const PROP = 'pdo';
 
-    private ConnectionLocatorInterface $connectionLocator;
-
-    public function __construct(ConnectionLocatorInterface $connectionLocator)
+    public function __construct(private readonly ConnectionLocatorInterface $connectionLocator)
     {
-        $this->connectionLocator = $connectionLocator;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function invoke(MethodInvocation $invocation)
     {

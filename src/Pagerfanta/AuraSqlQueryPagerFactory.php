@@ -9,15 +9,12 @@ use Aura\SqlQuery\Common\SelectInterface;
 
 class AuraSqlQueryPagerFactory implements AuraSqlQueryPagerFactoryInterface
 {
-    private AuraSqlQueryPagerInterface $auraSqlQueryPager;
-
-    public function __construct(AuraSqlQueryPagerInterface $auraSqlQueryPager)
+    public function __construct(private readonly AuraSqlQueryPagerInterface $auraSqlQueryPager)
     {
-        $this->auraSqlQueryPager = $auraSqlQueryPager;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function newInstance(ExtendedPdoInterface $pdo, SelectInterface $select, $paging, $uriTemplate)
     {

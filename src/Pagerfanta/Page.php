@@ -8,11 +8,10 @@ use Iterator;
 use IteratorAggregate;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\ViewInterface;
+use Stringable;
 
-/**
- * @implements IteratorAggregate<int, Page>
- */
-final class Page implements IteratorAggregate
+/** @implements IteratorAggregate<int, Page> */
+final class Page implements IteratorAggregate, Stringable
 {
     /** @var int */
     public $maxPerPage;
@@ -32,30 +31,22 @@ final class Page implements IteratorAggregate
     /** @var mixed */
     public $data;
 
-    /** @var Pagerfanta<mixed> */
-    private Pagerfanta $pagerfanta;
-
     /** @var callable */
     private $routeGenerator;
-    private ViewInterface $view;
-
-    /** @var array<string, mixed> */
-    private array $viewOption;
 
     /**
      * @phpstan-param Pagerfanta<mixed> $pagerfanta
      * @phpstan-param array<string, mixed>      $viewOption
      */
     public function __construct(
-        Pagerfanta $pagerfanta,
+        /** @var Pagerfanta<mixed> */
+        private readonly Pagerfanta $pagerfanta,
         RouteGeneratorInterface $routeGenerator,
-        ViewInterface $view,
-        array $viewOption
+        private readonly ViewInterface $view,
+        /** @var array<string, mixed> */
+        private readonly array $viewOption
     ) {
-        $this->pagerfanta = $pagerfanta;
         $this->routeGenerator = $routeGenerator;
-        $this->view = $view;
-        $this->viewOption = $viewOption;
     }
 
     public function __toString(): string
@@ -63,12 +54,12 @@ final class Page implements IteratorAggregate
         return (string) $this->view->render(
             $this->pagerfanta,
             $this->routeGenerator,
-            $this->viewOption
+            $this->viewOption,
         );
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @return Iterator<int, Page>
      */

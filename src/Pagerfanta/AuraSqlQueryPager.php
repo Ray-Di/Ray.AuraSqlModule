@@ -16,18 +16,12 @@ use Ray\AuraSqlModule\Exception\NotInitialized;
 
 use function array_keys;
 
-/**
- * @implements ArrayAccess<int, Page>
- */
+/** @implements ArrayAccess<int, Page> */
 
 class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
 {
     private ExtendedPdoInterface $pdo;
-    private ViewInterface $view;
     private ?RouteGeneratorInterface $routeGenerator = null;
-
-    /** @var array<array<string>> */
-    private array $viewOptions;
     private SelectInterface $select;
 
     /** @phpstan-var positive-int */
@@ -39,15 +33,13 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
      * @PagerViewOption("viewOptions")
      */
     #[PagerViewOption('viewOptions')]
-    public function __construct(ViewInterface $view, array $viewOptions)
+    public function __construct(private readonly ViewInterface $view, private readonly array $viewOptions)
     {
-        $this->view = $view;
-        $this->viewOptions = $viewOptions;
     }
 
     /**
      * @phpstan-param positive-int $paging
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function init(ExtendedPdoInterface $pdo, SelectInterface $select, int $paging, RouteGeneratorInterface $routeGenerator)
     {
@@ -61,7 +53,7 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
 
     /**
      * @phpstan-param positive-int $page
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetGet($page): Page
     {
@@ -93,7 +85,7 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetExists($offset): bool
     {
@@ -101,7 +93,7 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetSet($offset, $value): void
     {
@@ -109,7 +101,7 @@ class AuraSqlQueryPager implements AuraSqlQueryPagerInterface, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetUnset($offset): void
     {

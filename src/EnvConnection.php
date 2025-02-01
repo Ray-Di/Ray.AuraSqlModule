@@ -14,38 +14,23 @@ use function sprintf;
 
 final class EnvConnection
 {
-    private string $dsn;
-    private string $username;
-    private string $password;
-
-    /** @var array<string> */
-    private array $options;
-
-    /** @var array<string> */
-    private array $queries;
-
     /** @var array<ExtendedPdo> */
     private static array $pdo = [];
-    private ?string $slave;
 
     /**
      * @phpstan-param array<string> $options
      * @phpstan-param array<string> $queries
      */
     public function __construct(
-        string $dsn,
-        ?string $slave,
-        string $username = '',
-        string $password = '',
-        array $options = [],
-        array $queries = []
+        private readonly string $dsn,
+        private readonly ?string $slave,
+        private readonly string $username = '',
+        private readonly string $password = '',
+        /** @var array<string> */
+        private readonly array $options = [],
+        /** @var array<string> */
+        private readonly array $queries = []
     ) {
-        $this->dsn = $dsn;
-        $this->slave = $slave;
-        $this->username = $username;
-        $this->password = $password;
-        $this->options = $options;
-        $this->queries = $queries;
     }
 
     public function __invoke(): ExtendedPdo
@@ -60,7 +45,7 @@ final class EnvConnection
             (string) getenv($this->username),
             (string) getenv($this->password),
             $this->options,
-            $this->queries
+            $this->queries,
         );
 
         return self::$pdo[$dsn];
@@ -80,9 +65,7 @@ final class EnvConnection
         return $this->changeHost((string) getenv($this->dsn), $slave);
     }
 
-    /**
-     * @psalm-pure
-     */
+    /** @psalm-pure */
     private function changeHost(string $dsn, string $host): string
     {
         preg_match(AuraSqlModule::PARSE_PDO_DSN_REGEX, $dsn, $parts);

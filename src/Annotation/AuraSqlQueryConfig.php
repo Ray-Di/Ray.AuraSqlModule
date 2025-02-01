@@ -17,14 +17,10 @@ use Ray\Di\Di\Qualifier;
 #[Attribute(Attribute::TARGET_METHOD), Qualifier]
 final class AuraSqlQueryConfig
 {
-    /** @var ?array<string, string> */
-    public $value;
-
     /**
      * @param array<string, string> $value
      */
-    public function __construct(?array $value = null)
+    public function __construct(public ?array $value = null)
     {
-        $this->value = $value;
     }
 }

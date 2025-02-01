@@ -11,13 +11,10 @@ use Ray\Di\SetContextInterface;
 
 use function assert;
 
-/**
- * @implements ProviderInterface<ExtendedPdo>
- */
+/** @implements ProviderInterface<ExtendedPdo> */
 
 class NamedExtendedPdoProvider implements ProviderInterface, SetContextInterface
 {
-    private InjectorInterface $injector;
     private string $context;
 
     /**
@@ -28,13 +25,12 @@ class NamedExtendedPdoProvider implements ProviderInterface, SetContextInterface
         $this->context = $context;
     }
 
-    public function __construct(InjectorInterface $injector)
+    public function __construct(private readonly InjectorInterface $injector)
     {
-        $this->injector = $injector;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(): ExtendedPdo
     {

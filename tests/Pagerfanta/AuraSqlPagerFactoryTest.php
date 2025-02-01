@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ray\AuraSqlModule\Pagerfanta;
 
+use Override;
 use Pagerfanta\View\DefaultView;
 use Ray\AuraSqlModule\FakeEntity;
 
@@ -11,9 +12,11 @@ class AuraSqlPagerFactoryTest extends AbstractPdoTestCase
 {
     private AuraSqlPagerFactory $factory;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
+
         $this->factory = new AuraSqlPagerFactory(new AuraSqlPager(new DefaultView(), []));
     }
 

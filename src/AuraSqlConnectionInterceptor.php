@@ -17,25 +17,17 @@ class AuraSqlConnectionInterceptor implements MethodInterceptor
 {
     public const PROP = 'pdo';
 
-    private ConnectionLocatorInterface $connectionLocator;
-
-    /** @var string[] */
-    private array $readsMethods = [];
-
-    /**
-     * @phpstan-param array<string> $readMethods
-     *
-     * @Read("readMethods")
-     */
-    #[Read('readMethods')]
-    public function __construct(ConnectionLocatorInterface $connectionLocator, array $readMethods)
-    {
-        $this->connectionLocator = $connectionLocator;
-        $this->readsMethods = $readMethods;
+    /** @phpstan-param array<string> $readMethods */
+    public function __construct(
+        private readonly ConnectionLocatorInterface $connectionLocator,
+        /** @var string[] */
+        #[Read]
+        private readonly array $readsMethods
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function invoke(MethodInvocation $invocation)
     {

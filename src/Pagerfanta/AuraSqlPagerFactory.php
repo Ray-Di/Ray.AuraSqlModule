@@ -8,15 +8,12 @@ use Aura\Sql\ExtendedPdoInterface;
 
 class AuraSqlPagerFactory implements AuraSqlPagerFactoryInterface
 {
-    private AuraSqlPagerInterface $auraSqlPager;
-
-    public function __construct(AuraSqlPagerInterface $auraSqlPager)
+    public function __construct(private readonly AuraSqlPagerInterface $auraSqlPager)
     {
-        $this->auraSqlPager = $auraSqlPager;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function newInstance(ExtendedPdoInterface $pdo, string $sql, array $params, int $paging, string $uriTemplate, ?string $entity = null): AuraSqlPagerInterface
     {

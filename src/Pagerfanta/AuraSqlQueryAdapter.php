@@ -21,24 +21,20 @@ use function is_int;
  */
 class AuraSqlQueryAdapter implements AdapterInterface
 {
-    private ExtendedPdoInterface $pdo;
-    private SelectInterface $select;
+    private readonly SelectInterface $select;
 
     /** @var callable */
     private $countQueryBuilderModifier;
 
-    /**
-     * @param callable $countQueryBuilderModifier a callable to modifier the query builder to count
-     */
-    public function __construct(ExtendedPdoInterface $pdo, SelectInterface $select, callable $countQueryBuilderModifier)
+    /** @param callable $countQueryBuilderModifier a callable to modifier the query builder to count */
+    public function __construct(private readonly ExtendedPdoInterface $pdo, SelectInterface $select, callable $countQueryBuilderModifier)
     {
-        $this->pdo = $pdo;
         $this->select = clone $select;
         $this->countQueryBuilderModifier = $countQueryBuilderModifier;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNbResults(): int
     {
@@ -56,7 +52,7 @@ class AuraSqlQueryAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @return iterable<array-key, mixed>
      */

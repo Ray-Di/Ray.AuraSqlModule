@@ -13,21 +13,16 @@ use Ray\Di\Scope;
 
 class AuraSqlReplicationModule extends AbstractModule
 {
-    private ConnectionLocatorInterface $connectionLocator;
-    private string $qualifer;
-
     public function __construct(
-        ConnectionLocatorInterface $connectionLocator,
-        string $qualifer = '',
+        private readonly ConnectionLocatorInterface $connectionLocator,
+        private readonly string $qualifer = '',
         ?AbstractModule $module = null
     ) {
-        $this->connectionLocator = $connectionLocator;
-        $this->qualifer = $qualifer;
         parent::__construct($module);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {
@@ -51,13 +46,13 @@ class AuraSqlReplicationModule extends AbstractModule
         $this->bindInterceptor(
             $this->matcher->any(),
             $this->matcher->annotatedWith(ReadOnlyConnection::class),
-            [AuraSqlSlaveDbInterceptor::class]
+            [AuraSqlSlaveDbInterceptor::class],
         );
         // @WriteConnection
         $this->bindInterceptor(
             $this->matcher->any(),
             $this->matcher->annotatedWith(WriteConnection::class),
-            [AuraSqlMasterDbInterceptor::class]
+            [AuraSqlMasterDbInterceptor::class],
         );
     }
 }

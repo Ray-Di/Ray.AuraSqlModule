@@ -25,26 +25,16 @@ use const PHP_EOL;
  */
 class ExtendedPdoAdapter implements AdapterInterface
 {
-    private ExtendedPdoInterface $pdo;
-    private string $sql;
+    private readonly FetcherInterface $fetcher;
 
-    /** @var array<mixed> */
-    private array $params;
-    private FetcherInterface $fetcher;
-
-    /**
-     * @param array<mixed> $params
-     */
-    public function __construct(ExtendedPdoInterface $pdo, string $sql, array $params, ?FetcherInterface $fetcher = null)
+    /** @param array<mixed> $params */
+    public function __construct(private readonly ExtendedPdoInterface $pdo, private readonly string $sql, private readonly array $params, ?FetcherInterface $fetcher = null)
     {
-        $this->pdo = $pdo;
-        $this->sql = $sql;
-        $this->params = $params;
-        $this->fetcher = $fetcher ?? new FetchAssoc($pdo);
+        $this->fetcher = $fetcher ?? new FetchAssoc($this->pdo);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @SuppressWarnings(PHPMD.GotoStatement)
      */
@@ -75,7 +65,7 @@ class ExtendedPdoAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param int $offset
      * @param int $length
@@ -91,7 +81,7 @@ class ExtendedPdoAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getLimitClause(int $offset, int $length): string
     {

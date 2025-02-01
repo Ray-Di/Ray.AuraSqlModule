@@ -18,15 +18,12 @@ use function is_array;
 
 class TransactionalInterceptor implements MethodInterceptor
 {
-    private ?ExtendedPdoInterface $pdo;
-
-    public function __construct(?ExtendedPdoInterface $pdo = null)
+    public function __construct(private readonly ?ExtendedPdoInterface $pdo = null)
     {
-        $this->pdo = $pdo;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function invoke(MethodInvocation $invocation)
     {
