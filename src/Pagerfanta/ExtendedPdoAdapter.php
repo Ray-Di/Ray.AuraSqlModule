@@ -9,6 +9,7 @@ use Pagerfanta\Adapter\AdapterInterface;
 
 use function assert;
 use function count;
+use function is_array;
 use function is_int;
 use function preg_match;
 use function preg_replace;
@@ -36,7 +37,7 @@ class ExtendedPdoAdapter implements AdapterInterface
     /**
      * {@inheritDoc}
      *
-     * @SuppressWarnings(PHPMD.GotoStatement)
+     * @SuppressWarnings(PHPMD.GotoStatement) // @phpstan-ignore-line
      */
     public function getNbResults(): int
     {
@@ -58,7 +59,6 @@ class ExtendedPdoAdapter implements AdapterInterface
         ret:
         /** @var string $count */
         $nbResult = ! $count ? 0 : (int) $count;
-        assert(is_int($nbResult));
         assert($nbResult >= 0);
 
         return $nbResult;
@@ -133,11 +133,11 @@ class ExtendedPdoAdapter implements AdapterInterface
         }
 
         $queryCount = preg_replace('/(?:.*)\bFROM\b\s+/Uims', 'SELECT COUNT(*) FROM ', $query, 1);
-        /** @var array<int> $split */
         $split = preg_split('/\s+ORDER\s+BY\s+/is', (string) $queryCount);
+        assert(is_array($split), 'preg_split() should return an array');
         [$queryCount] = $split;
-        /** @var array<int> $split2 */
         $split2 = preg_split('/\bLIMIT\b/is', (string) $queryCount);
+        assert(is_array($split2), 'preg_split() should return an array');
         [$queryCount2] = $split2;
 
         return trim((string) $queryCount2);

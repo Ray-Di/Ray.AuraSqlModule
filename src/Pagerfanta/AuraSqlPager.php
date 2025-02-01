@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ray\AuraSqlModule\Pagerfanta;
 
 use Aura\Sql\ExtendedPdoInterface;
-use Pagerfanta\Adapter\AdapterInterface;
 use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\ViewInterface;
@@ -32,7 +31,7 @@ class AuraSqlPager implements AuraSqlPagerInterface
     private int $paging;
 
     /**
-     * @param array<array<string>> $viewOptions
+     * @param array<string, mixed> $viewOptions
      *
      * @PagerViewOption("viewOptions")
      */
@@ -108,12 +107,15 @@ class AuraSqlPager implements AuraSqlPagerInterface
         throw new LogicException('read only');
     }
 
-    /** @return AdapterInterface<T> */
-    private function getPdoAdapter(): AdapterInterface
+    /** @return ExtendedPdoAdapter<T> */
+    private function getPdoAdapter(): ExtendedPdoAdapter
     {
         assert($this->entity === null || class_exists($this->entity));
         $fetcher = $this->entity ? new FetchEntity($this->pdo, $this->entity) : new FetchAssoc($this->pdo);
 
-        return new ExtendedPdoAdapter($this->pdo, $this->sql, $this->params, $fetcher);
+        /** @var ExtendedPdoAdapter<T> $adapter */
+        $adapter = new ExtendedPdoAdapter($this->pdo, $this->sql, $this->params, $fetcher);
+
+        return $adapter;
     }
 }

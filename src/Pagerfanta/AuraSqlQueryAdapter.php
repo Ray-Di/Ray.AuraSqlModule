@@ -12,8 +12,6 @@ use PDOStatement;
 
 use function assert;
 use function call_user_func;
-use function is_array;
-use function is_int;
 
 /**
  * @template T
@@ -46,7 +44,6 @@ class AuraSqlQueryAdapter implements AdapterInterface
         $result = $sth->fetchColumn();
         $nbResults = (int) $result;
         assert($nbResults >= 0);
-        assert(is_int($nbResults));
 
         return $nbResults;
     }
@@ -66,10 +63,8 @@ class AuraSqlQueryAdapter implements AdapterInterface
         $sth = $this->pdo->prepare($sql);
         assert($sth instanceof PDOStatement);
         $sth->execute($this->select->getBindValues());
-        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        assert(is_array($result));
 
-        return $result;
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function prepareCountQueryBuilder(): SelectInterface

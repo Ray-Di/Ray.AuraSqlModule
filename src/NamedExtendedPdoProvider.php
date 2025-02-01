@@ -9,8 +9,6 @@ use Ray\Di\InjectorInterface;
 use Ray\Di\ProviderInterface;
 use Ray\Di\SetContextInterface;
 
-use function assert;
-
 /** @implements ProviderInterface<ExtendedPdo> */
 
 class NamedExtendedPdoProvider implements ProviderInterface, SetContextInterface
@@ -35,7 +33,6 @@ class NamedExtendedPdoProvider implements ProviderInterface, SetContextInterface
     public function get(): ExtendedPdo
     {
         $connection = $this->injector->getInstance(EnvConnection::class, $this->context);
-        assert($connection instanceof EnvConnection);
 
         return ($connection)();
     }
