@@ -7,7 +7,7 @@ namespace Ray\AuraSqlModule;
 use Aura\Sql\ExtendedPdoInterface;
 use Ray\Di\Di\Inject;
 
-/** @codeCoverageIgnore */
+/** @deprecated Use constructor injection instead */
 trait AuraSqlInject
 {
     /** @var ExtendedPdoInterface */

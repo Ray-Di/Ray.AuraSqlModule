@@ -7,6 +7,7 @@ namespace Ray\AuraSqlModule;
 use Aura\SqlQuery\Common\UpdateInterface;
 use Ray\Di\Di\Inject;
 
+/** @deprecated Use constructor injection instead */
 trait AuraSqlUpdateInject
 {
     /** @var UpdateInterface */

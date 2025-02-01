@@ -7,6 +7,7 @@ namespace Ray\AuraSqlModule;
 use Ray\AuraSqlModule\Pagerfanta\AuraSqlPagerFactoryInterface;
 use Ray\Di\Di\Inject;
 
+/** @deprecated Use constructor injection instead */
 trait AuraSqlPagerInject
 {
     /** @var AuraSqlPagerFactoryInterface */
