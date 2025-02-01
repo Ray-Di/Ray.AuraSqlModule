@@ -13,44 +13,27 @@ class AuraSqlModule extends AbstractModule
 {
     public const PARSE_PDO_DSN_REGEX = '/(.*?):(?:(host|server)=.*?;)?(.*)/i';
 
-    private string $dsn;
-    private string $user;
-    private string $password;
-    private string $slave;
-
-    /** @var array<string> */
-    private array $options;
-
-    /** @var array<string> */
-    private array $queries;
-
     /**
-     * @param string        $dsnKey      Data Source Name (DSN)
-     * @param string        $user        User name for the DSN string
-     * @param string        $passwordKey Password for the DSN string
-     * @param string        $slaveKey    Comma separated slave host list
-     * @param array<string> $options     A key=>value array of driver-specific connection options
+     * @param string        $dsn      Data Source Name (DSN)
+     * @param string        $user     User name for the DSN string
+     * @param string        $password Password for the DSN string
+     * @param string        $slave    Comma separated slave host list
+     * @param array<string> $options  A key=>value array of driver-specific connection options
      * @param array<string> $queries
      */
     public function __construct(
-        string $dsnKey,
-        string $user = '',
-        string $passwordKey = '',
-        string $slaveKey = '',
-        array $options = [],
-        array $queries = []
+        private readonly string $dsn,
+        private readonly string $user = '',
+        private readonly string $password = '',
+        private readonly string $slave = '',
+        private readonly array $options = [],
+        private readonly array $queries = []
     ) {
-        $this->dsn = $dsnKey;
-        $this->user = $user;
-        $this->password = $passwordKey;
-        $this->slave = $slaveKey;
-        $this->options = $options;
-        $this->queries = $queries;
         parent::__construct();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {
@@ -68,7 +51,7 @@ class AuraSqlModule extends AbstractModule
         $this->bind()->annotatedWith('pdo_queries')->toInstance($this->queries);
         $this->bind(ExtendedPdoInterface::class)->toConstructor(
             ExtendedPdo::class,
-            'dsn=pdo_dsn,username=pdo_user,password=pdo_pass,options=pdo_options,queries=pdo_queries'
+            'dsn=pdo_dsn,username=pdo_user,password=pdo_pass,options=pdo_options,queries=pdo_queries',
         )->in(Scope::SINGLETON);
     }
 
@@ -80,7 +63,7 @@ class AuraSqlModule extends AbstractModule
             $this->password,
             $this->slave,
             $this->options,
-            $this->queries
+            $this->queries,
         );
         $this->install(new AuraSqlReplicationModule($locator));
     }

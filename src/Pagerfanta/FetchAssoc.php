@@ -7,14 +7,10 @@ namespace Ray\AuraSqlModule\Pagerfanta;
 use Aura\Sql\ExtendedPdoInterface;
 use PDO;
 
-final class FetchAssoc implements FetcherInterface
+final readonly class FetchAssoc implements FetcherInterface
 {
-    /** @var ExtendedPdoInterface */
-    private $pdo;
-
-    public function __construct(ExtendedPdoInterface $pdo)
+    public function __construct(private ExtendedPdoInterface $pdo)
     {
-        $this->pdo = $pdo;
     }
 
     /**

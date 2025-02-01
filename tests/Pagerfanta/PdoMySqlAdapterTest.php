@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Ray\AuraSqlModule\Pagerfanta;
 
+use Override;
+
 class PdoMySqlAdapterTest extends AbstractPdoTestCase
 {
     private ExtendedPdoAdapter $adapter;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
+
         $sql = 'SELECT * FROM posts';
         $this->adapter = new ExtendedPdoAdapter($this->pdo, $sql, []);
     }

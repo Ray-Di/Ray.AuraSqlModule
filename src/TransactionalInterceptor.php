@@ -8,33 +8,25 @@ use Aura\Sql\ExtendedPdoInterface;
 use PDOException;
 use Ray\Aop\MethodInterceptor;
 use Ray\Aop\MethodInvocation;
-use Ray\Aop\ReflectionMethod;
 use Ray\AuraSqlModule\Annotation\Transactional;
 use Ray\AuraSqlModule\Exception\RollbackException;
 
-use function assert;
 use function count;
-use function is_array;
 
 class TransactionalInterceptor implements MethodInterceptor
 {
-    private ?ExtendedPdoInterface $pdo;
-
-    public function __construct(?ExtendedPdoInterface $pdo = null)
+    public function __construct(private readonly ?ExtendedPdoInterface $pdo = null)
     {
-        $this->pdo = $pdo;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function invoke(MethodInvocation $invocation)
     {
         $method = $invocation->getMethod();
-        assert($method instanceof ReflectionMethod);
         $transactional = $method->getAnnotation(Transactional::class);
-        assert($transactional instanceof Transactional);
-        if (is_array($transactional->value) && count((array) $transactional->value) > 1) {
+        if ($transactional instanceof Transactional && count((array) $transactional->value) > 1) {
             return (new PropTransaction())($invocation, $transactional);
         }
 

@@ -9,6 +9,7 @@ use Pagerfanta\Adapter\AdapterInterface;
 
 use function assert;
 use function count;
+use function is_array;
 use function is_int;
 use function preg_match;
 use function preg_replace;
@@ -25,28 +26,18 @@ use const PHP_EOL;
  */
 class ExtendedPdoAdapter implements AdapterInterface
 {
-    private ExtendedPdoInterface $pdo;
-    private string $sql;
+    private readonly FetcherInterface $fetcher;
 
-    /** @var array<mixed> */
-    private array $params;
-    private FetcherInterface $fetcher;
-
-    /**
-     * @param array<mixed> $params
-     */
-    public function __construct(ExtendedPdoInterface $pdo, string $sql, array $params, ?FetcherInterface $fetcher = null)
+    /** @param array<mixed> $params */
+    public function __construct(private readonly ExtendedPdoInterface $pdo, private readonly string $sql, private readonly array $params, ?FetcherInterface $fetcher = null)
     {
-        $this->pdo = $pdo;
-        $this->sql = $sql;
-        $this->params = $params;
-        $this->fetcher = $fetcher ?? new FetchAssoc($pdo);
+        $this->fetcher = $fetcher ?? new FetchAssoc($this->pdo);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
-     * @SuppressWarnings(PHPMD.GotoStatement)
+     * @SuppressWarnings(PHPMD.GotoStatement) // @phpstan-ignore-line
      */
     public function getNbResults(): int
     {
@@ -68,14 +59,13 @@ class ExtendedPdoAdapter implements AdapterInterface
         ret:
         /** @var string $count */
         $nbResult = ! $count ? 0 : (int) $count;
-        assert(is_int($nbResult));
         assert($nbResult >= 0);
 
         return $nbResult;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param int $offset
      * @param int $length
@@ -91,7 +81,7 @@ class ExtendedPdoAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getLimitClause(int $offset, int $length): string
     {
@@ -143,11 +133,11 @@ class ExtendedPdoAdapter implements AdapterInterface
         }
 
         $queryCount = preg_replace('/(?:.*)\bFROM\b\s+/Uims', 'SELECT COUNT(*) FROM ', $query, 1);
-        /** @var array<int> $split */
         $split = preg_split('/\s+ORDER\s+BY\s+/is', (string) $queryCount);
+        assert(is_array($split), 'preg_split() should return an array');
         [$queryCount] = $split;
-        /** @var array<int> $split2 */
         $split2 = preg_split('/\bLIMIT\b/is', (string) $queryCount);
+        assert(is_array($split2), 'preg_split() should return an array');
         [$queryCount2] = $split2;
 
         return trim((string) $queryCount2);

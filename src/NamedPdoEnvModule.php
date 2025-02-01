@@ -11,18 +11,6 @@ class NamedPdoEnvModule extends AbstractModule
 {
     public const PARSE_PDO_DSN_REGEX = '/(.*?)\:(host|server)=.*?;(.*)/i';
 
-    private string $qualifer;
-    private string $dsn;
-    private string $username;
-    private string $password;
-    private string $slave;
-
-    /** @var array<string> */
-    private array $options;
-
-    /** @var array<string> */
-    private array $queries;
-
     /**
      * @param string        $qualifer Qualifer for ExtendedPdoInterface
      * @param string        $dsn      Data Source Name (DSN)
@@ -33,26 +21,19 @@ class NamedPdoEnvModule extends AbstractModule
      * @param array<string> $queries  Queries to execute after the connection.
      */
     public function __construct(
-        string $qualifer,
-        string $dsn,
-        string $username = '',
-        string $password = '',
-        string $slave = '',
-        array $options = [],
-        array $queries = []
+        private readonly string $qualifer,
+        private readonly string $dsn,
+        private readonly string $username = '',
+        private readonly string $password = '',
+        private readonly string $slave = '',
+        private readonly array $options = [],
+        private readonly array $queries = []
     ) {
-        $this->qualifer = $qualifer;
-        $this->dsn = $dsn;
-        $this->username = $username;
-        $this->password = $password;
-        $this->slave = $slave;
-        $this->options = $options;
-        $this->queries = $queries;
         parent::__construct();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {
@@ -68,12 +49,12 @@ class NamedPdoEnvModule extends AbstractModule
             $this->username,
             $this->password,
             $this->options,
-            $this->queries
+            $this->queries,
         );
         $this->bind(EnvConnection::class)->annotatedWith($this->qualifer)->toInstance($connection);
         $this->bind(ExtendedPdoInterface::class)->annotatedWith($this->qualifer)->toProvider(
             NamedExtendedPdoProvider::class,
-            $this->qualifer
+            $this->qualifer,
         );
     }
 
@@ -85,7 +66,7 @@ class NamedPdoEnvModule extends AbstractModule
             $this->password,
             $this->slave,
             $this->options,
-            $this->queries
+            $this->queries,
         );
         $this->install(new AuraSqlReplicationModule($locator, $this->qualifer));
     }

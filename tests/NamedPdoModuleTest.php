@@ -11,7 +11,6 @@ use Ray\Di\Injector;
 use ReflectionProperty;
 
 use function assert;
-use function get_class;
 
 class NamedPdoModuleTest extends TestCase
 {
@@ -60,7 +59,7 @@ class NamedPdoModuleTest extends TestCase
 
     private function getDsn(ExtendedPdo $pdo): string
     {
-        $prop = new ReflectionProperty(get_class($pdo), 'args');
+        $prop = new ReflectionProperty($pdo::class, 'args');
         $prop->setAccessible(true);
         $args = $prop->getValue($pdo);
 

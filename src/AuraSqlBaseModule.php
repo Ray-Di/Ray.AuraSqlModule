@@ -11,16 +11,13 @@ use function preg_match;
 
 class AuraSqlBaseModule extends AbstractModule
 {
-    private string $dsn;
-
-    public function __construct(string $dsnKey, ?AbstractModule $module = null)
+    public function __construct(private readonly string $dsn, ?AbstractModule $module = null)
     {
-        $this->dsn = $dsnKey;
         parent::__construct($module);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

@@ -12,16 +12,12 @@ use function class_exists;
 
 class FetchEntity implements FetcherInterface
 {
-    private ExtendedPdoInterface $pdo;
-    private string $entity;
+    private readonly string $entity;
 
-    /**
-     * @param class-string $entity
-     */
-    public function __construct(ExtendedPdoInterface $pdo, string $entity)
+    /** @param class-string $entity */
+    public function __construct(private readonly ExtendedPdoInterface $pdo, string $entity)
     {
         assert(class_exists($entity));
-        $this->pdo = $pdo;
         $this->entity = $entity;
     }
 
@@ -32,9 +28,7 @@ class FetchEntity implements FetcherInterface
     {
         $pdoStatement = $this->pdo->perform($sql, $params);
 
-        return $pdoStatement->fetchAll(PDO::FETCH_FUNC, /** @param list<mixed> $args */function (...$args) {
-            /** @psalm-suppress MixedMethodCall */
-            return new $this->entity(...$args);
-        });
+        return $pdoStatement->fetchAll(PDO::FETCH_FUNC, /** @param list<mixed> $args */fn (...$args) => /** @psalm-suppress MixedMethodCall */
+            new $this->entity(...$args));
     }
 }

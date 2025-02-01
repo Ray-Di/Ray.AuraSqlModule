@@ -14,10 +14,8 @@ use function assert;
 
 class AuraSqlReplicationModuleTest extends TestCase
 {
-    /**
-     * @return array<list<string>>
-     */
-    public function connectionProvider(): array
+    /** @return array<list<string>> */
+    public static function connectionProvider(): array
     {
         $locator = new ConnectionLocator();
         $slave = new Connection('sqlite::memory:');
@@ -30,9 +28,7 @@ class AuraSqlReplicationModuleTest extends TestCase
         return [[$locator, $masterPdo, $slavePdo]];
     }
 
-    /**
-     * @dataProvider connectionProvider
-     */
+    /** @dataProvider connectionProvider */
     public function testLocatorSlave(ConnectionLocator $locator, ExtendedPdo $masterPdo, ExtendedPdo $slavePdo)
     {
         unset($masterPdo);
@@ -43,9 +39,7 @@ class AuraSqlReplicationModuleTest extends TestCase
         $this->assertSame($slavePdo, $model->pdo);
     }
 
-    /**
-     * @dataProvider connectionProvider
-     */
+    /** @dataProvider connectionProvider */
     public function testLocatorMaster(ConnectionLocator $locator, ExtendedPdo $masterPdo, ExtendedPdo $slavePdo)
     {
         unset($slavePdo);
@@ -56,9 +50,7 @@ class AuraSqlReplicationModuleTest extends TestCase
         $this->assertSame($masterPdo, $model->pdo);
     }
 
-    /**
-     * @dataProvider connectionProvider
-     */
+    /** @dataProvider connectionProvider */
     public function testLocatorMasterWithQualifer(ConnectionLocator $locator, ExtendedPdo $masterPdo, ExtendedPdo $slavePdo)
     {
         unset($masterPdo, $slavePdo);

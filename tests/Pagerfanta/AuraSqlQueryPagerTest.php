@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ray\AuraSqlModule\Pagerfanta;
 
+use Override;
 use Pagerfanta\Exception\LogicException;
 use Pagerfanta\View\DefaultView;
 use Ray\AuraSqlModule\Exception\NotInitialized;
@@ -12,9 +13,11 @@ class AuraSqlQueryPagerTest extends AuraSqlQueryTestCase
 {
     private AuraSqlQueryPager $pager;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
+
         $this->pager = new AuraSqlQueryPager(new DefaultView(), []);
     }
 

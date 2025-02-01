@@ -8,15 +8,6 @@ use Aura\Sql\ExtendedPdo;
 
 class Connection
 {
-    private string $dsn;
-    private string $username;
-    private string $password;
-
-    /** @var array<string> */
-    private array $options;
-
-    /** @var array<string> */
-    private array $queries;
     private ?ExtendedPdo $pdo = null;
 
     /**
@@ -24,17 +15,14 @@ class Connection
      * @phpstan-param array<string> $queries
      */
     public function __construct(
-        string $dsn,
-        string $username = '',
-        string $password = '',
-        array $options = [],
-        array $queries = []
+        private readonly string $dsn,
+        private readonly string $username = '',
+        private readonly string $password = '',
+        /** @var array<string> */
+        private readonly array $options = [],
+        /** @var array<string> */
+        private readonly array $queries = []
     ) {
-        $this->dsn = $dsn;
-        $this->username = $username;
-        $this->password = $password;
-        $this->options = $options;
-        $this->queries = $queries;
     }
 
     public function __invoke(): ExtendedPdo

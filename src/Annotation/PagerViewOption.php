@@ -12,16 +12,12 @@ use Ray\Di\Di\Qualifier;
  * @Annotation
  * @Target("METHOD")
  * @Qualifier
- * @NamedArgumentConstructor()
+ * @NamedArgumentConstructor
  */
 #[Attribute(Attribute::TARGET_METHOD), Qualifier]
 final class PagerViewOption
 {
-    /** @var string */
-    public $value;
-
-    public function __construct(string $value)
+    public function __construct(public string $value)
     {
-        $this->value = $value;
     }
 }

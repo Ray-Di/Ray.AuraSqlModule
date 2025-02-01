@@ -10,11 +10,8 @@ use Ray\Di\Provider;
 
 class ProfilerProvider implements Provider
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function get(): Profiler
