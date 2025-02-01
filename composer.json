@@ -10,14 +10,13 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "ray/di": "^2.13.1",
-        "ray/aop": "^2.10.4",
+        "ray/di": "^2.18",
+        "ray/aop": "^2.17",
         "aura/sql": "^6.0",
         "pagerfanta/pagerfanta": "^3.5",
-        "rize/uri-template": "^0.3.4 || ^0.4",
+        "rize/uri-template": "^0.4",
         "doctrine/annotations": "^1.11 || ^2.0",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
-        "symfony/polyfill-php81": "^1.24",
         "aura/sqlquery": "^3.0"
     },
     "require-dev": {
